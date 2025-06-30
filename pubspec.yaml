@@ -1,0 +1,58 @@
+name: eterny_task
+description: "Eterny Task"
+
+publish_to: 'none'
+
+version: 0.0.1
+
+environment:
+  sdk: ^3.8.0
+  
+dependencies:
+  auto_route: ^10.1.0+1
+  collection: ^1.18.0
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  flutter_localizations:
+    sdk: flutter
+  flutter_svg: ^2.2.0
+  flutter_web_plugins:
+    sdk: flutter
+  freezed_annotation: ^2.4.4
+  get_it: ^8.0.3
+  injectable: ^2.5.0
+  intl: ^0.20.2
+  json_annotation: ^4.9.0
+  logging: ^1.2.0
+  package_info_plus: ^8.3.0
+  path_provider: ^2.1.5
+  skeletonizer: ^2.0.1
+  timezone: ^0.10.1
+  uuid: ^4.5.1
+
+dev_dependencies:
+  analyzer: ^7.4.5
+  arb_utils: ^0.1.0+1
+  auto_route_generator: ^10.2.3
+  build_runner: ^2.4.15
+  flutter_gen_runner: ^5.10.0
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+  freezed: ^2.5.7
+  injectable_generator: ^2.7.0
+  json_serializable: ^6.8.0
+
+
+flutter_gen:
+  integrations:
+    flutter_svg: true
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/data/
+    - assets/icons/
