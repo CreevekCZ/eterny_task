@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 class SecretTable extends StatelessWidget {
   const SecretTable({
     required this.secrets,
+    this.onDeleteSecret,
     super.key,
   });
   final List<Secret> secrets;
-
+  final ValueChanged<int>? onDeleteSecret;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -22,7 +23,12 @@ class SecretTable extends StatelessWidget {
       child: Column(
         children: [
           const SecretHeader(),
-          ...secrets.map((secret) => SecretRow(secret: secret)),
+          ...secrets.map(
+            (secret) => SecretRow(
+              secret: secret,
+              onDeleteSecret: onDeleteSecret,
+            ),
+          ),
         ],
       ),
     );

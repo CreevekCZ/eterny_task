@@ -27,6 +27,7 @@ class CharacterHeader extends StatelessWidget {
           HeaderCell(column: ExpandableTableColumnConfig.knowsTheAnswer),
           HeaderCell(column: ExpandableTableColumnConfig.nemeses),
           HeaderCell(column: ExpandableTableColumnConfig.secrets),
+          HeaderCell(column: ExpandableTableColumnConfig.delete),
         ],
       ),
     );

@@ -21,6 +21,7 @@ class NemesisHeader extends StatelessWidget {
           HeaderCell(column: ExpandableTableColumnConfig.isAlive),
           HeaderCell(column: ExpandableTableColumnConfig.years),
           HeaderCell(column: ExpandableTableColumnConfig.secrets),
+          HeaderCell(column: ExpandableTableColumnConfig.delete),
         ],
       ),
     );

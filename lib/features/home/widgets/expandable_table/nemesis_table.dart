@@ -8,12 +8,21 @@ class NemesisTable extends StatelessWidget {
     required this.nemeses,
     required this.expandedItems,
     required this.onToggleExpansion,
+    this.onDeleteNemesis,
+    this.onDeleteSecret,
     super.key,
   });
 
   final List<Nemesis> nemeses;
   final Set<String> expandedItems;
   final ValueChanged<String> onToggleExpansion;
+
+  final ValueChanged<int>? onDeleteNemesis;
+  final OnDeleteSecretFromNemesis? onDeleteSecret;
+
+  void _onDeleteSecret(int nemesisId, int secretId) {
+    onDeleteSecret?.call(nemesisId, secretId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +41,8 @@ class NemesisTable extends StatelessWidget {
               nemesis: nemesis,
               expandedItems: expandedItems,
               onToggleExpansion: onToggleExpansion,
+              onDeleteNemesis: onDeleteNemesis,
+              onDeleteSecret: _onDeleteSecret,
             ),
           ),
         ],

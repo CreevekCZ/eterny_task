@@ -22,4 +22,8 @@ sealed class CharactersState with _$CharactersState {
     loading: (state) => state.characters,
     orElse: () => const [],
   );
+
+  bool get isEmpty => maybeCharacters.isEmpty;
+
+  bool get isNotEmpty => maybeCharacters.isNotEmpty;
 }

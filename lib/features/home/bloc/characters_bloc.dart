@@ -1,5 +1,6 @@
 import 'package:eterny_task/features/home/bloc/characters_event.dart';
 import 'package:eterny_task/features/home/bloc/characters_state.dart';
+import 'package:eterny_task/features/home/models/character.dart';
 import 'package:eterny_task/features/home/services/character_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -36,7 +37,7 @@ final class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
   ) async {
     emit(CharactersState.loading(characters: state.maybeCharacters));
 
-    final characters = [...state.maybeCharacters];
+    final characters = List<Character>.from(state.maybeCharacters);
 
     characters.removeWhere((character) => character.uuid == event.uuid);
 
@@ -49,14 +50,18 @@ final class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
   ) async {
     emit(CharactersState.loading(characters: state.maybeCharacters));
 
-    final characters = [...state.maybeCharacters];
+    final characters = List<Character>.from(state.maybeCharacters);
+    final targetCharacter = characters.firstWhere((c) => c.uuid == event.uuid);
 
-    characters
-        .firstWhere((character) => character.uuid == event.uuid)
-        .nemeses
-        .removeWhere((nemesis) => nemesis.id == event.nemesisId);
+    final updatedCharacter = targetCharacter.copyWith(
+      nemeses: targetCharacter.nemeses.where((n) => n.id != event.nemesisId).toList(),
+    );
 
-    emit(CharactersState.loaded(characters: characters));
+    final updatedCharacters = characters
+        .map((c) => c.uuid == event.uuid ? updatedCharacter : c)
+        .toList();
+
+    emit(CharactersState.loaded(characters: updatedCharacters));
   }
 
   Future<void> _handleDeleteSecret(
@@ -65,15 +70,26 @@ final class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
   ) async {
     emit(CharactersState.loading(characters: state.maybeCharacters));
 
-    final characters = [...state.maybeCharacters];
+    final characters = List<Character>.from(state.maybeCharacters);
 
-    characters
-        .firstWhere((character) => character.uuid == event.uuid)
-        .nemeses
-        .firstWhere((nemesis) => nemesis.id == event.nemesisId)
-        .secrets
-        .removeWhere((secret) => secret.id == event.secretId);
+    final targetCharacter = characters.firstWhere((c) => c.uuid == event.uuid);
 
-    emit(CharactersState.loaded(characters: characters));
+    final targetNemesis = targetCharacter.nemeses.firstWhere((n) => n.id == event.nemesisId);
+
+    final updatedNemesis = targetNemesis.copyWith(
+      secrets: targetNemesis.secrets.where((s) => s.id != event.secretId).toList(),
+    );
+
+    final updatedCharacter = targetCharacter.copyWith(
+      nemeses: targetCharacter.nemeses
+          .map((n) => n.id == event.nemesisId ? updatedNemesis : n)
+          .toList(),
+    );
+
+    final updatedCharacters = characters
+        .map((c) => c.uuid == event.uuid ? updatedCharacter : c)
+        .toList();
+
+    emit(CharactersState.loaded(characters: updatedCharacters));
   }
 }

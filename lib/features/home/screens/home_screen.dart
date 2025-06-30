@@ -43,15 +43,77 @@ class _HomeScreenState extends State<HomeScreen> {
               toolbarHeight: 0,
             ),
             body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Expanded(
-                  child: Container(
-                    color: theme.colorScheme.surface,
-                    child: ExpandableTable(
-                      characters: state.maybeCharacters,
+                if (state.isEmpty)
+                  Center(
+                    child: Card(
+                      elevation: 8,
+                      color: theme.colorScheme.primaryContainer,
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        constraints: const BoxConstraints(
+                          maxWidth: 300,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          spacing: 16,
+                          children: [
+                            Text(
+                              context.l10n.charactersTable__lblNoCharacters,
+                              style: theme.textTheme.headlineMedium?.copyWith(
+                                color: theme.colorScheme.onPrimaryContainer,
+                              ),
+                            ),
+                            Text(
+                              context.l10n.charactersTable__lblTapToReloadCharacters,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.colorScheme.onPrimaryContainer,
+                              ),
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: FilledButton(
+                                onPressed: () =>
+                                    _charactersBloc.add(const CharactersEvent.loadCharacters()),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.refresh),
+                                    const SizedBox(width: 8),
+                                    Text(context.l10n.charactersTable__btnReloadCharacters),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                if (state.isNotEmpty)
+                  Expanded(
+                    child: Container(
+                      color: theme.colorScheme.surface,
+                      child: ExpandableTable(
+                        characters: state.maybeCharacters,
+                        onDeleteCharacter: (uuid) =>
+                            _charactersBloc.add(CharactersEvent.deleteCharacter(uuid: uuid)),
+                        onDeleteNemesis: (uuid, nemesisId) => _charactersBloc.add(
+                          CharactersEvent.deleteNemesis(uuid: uuid, nemesisId: nemesisId),
+                        ),
+                        onDeleteSecret: (uuid, secretId, nemesisId) => _charactersBloc.add(
+                          CharactersEvent.deleteSecret(
+                            uuid: uuid,
+                            secretId: secretId,
+                            nemesisId: nemesisId,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
           );

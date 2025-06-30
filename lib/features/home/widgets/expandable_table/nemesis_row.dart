@@ -9,11 +9,14 @@ class NemesisRow extends StatelessWidget {
     required this.nemesis,
     required this.isExpanded,
     required this.onToggleExpansion,
+    this.onDeleteNemesis,
     super.key,
   });
   final Nemesis nemesis;
   final bool isExpanded;
   final ValueChanged<String> onToggleExpansion;
+
+  final ValueChanged<int>? onDeleteNemesis;
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +79,15 @@ class NemesisRow extends StatelessWidget {
                         textColor: theme.colorScheme.onTertiaryContainer,
                       )
                     : const Text('0'),
+              ),
+              TableDataCell(
+                width: ExpandableTableColumnConfig.delete.width,
+                child: onDeleteNemesis != null
+                    ? IconButton(
+                        onPressed: () => onDeleteNemesis?.call(nemesis.id),
+                        icon: const Icon(Icons.delete, size: 24),
+                      )
+                    : const SizedBox.shrink(),
               ),
             ],
           ),

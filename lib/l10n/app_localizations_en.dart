@@ -9,9 +9,6 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get core__lblRemove => 'Remove';
-
-  @override
   String get charactersTable__lblTitle => 'Characters';
 
   @override
@@ -73,4 +70,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get charactersTable__lblNemesis => 'Nemesis';
+
+  @override
+  String get charactersTable__lblDelete => 'Delete';
+
+  @override
+  String get charactersTable__lblNoCharacters => 'No characters found';
+
+  @override
+  String get charactersTable__lblTapToReloadCharacters =>
+      'Tap the button below to reload characters';
+
+  @override
+  String get charactersTable__btnReloadCharacters => 'Reload Characters';
 }

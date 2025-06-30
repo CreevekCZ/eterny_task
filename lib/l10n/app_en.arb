@@ -1,6 +1,6 @@
+
 {
     "@@locale": "en",
-    "core__lblRemove": "Remove",
     "charactersTable__lblTitle": "Characters",
     "charactersTable__lblId": "ID",
     "charactersTable__lblName": "Name",
@@ -21,5 +21,9 @@
     "charactersTable__lblSecretId": "Secret ID",
     "charactersTable__lblSecreteCode": "Secrete Code",
     "charactersTable__lblCharacter": "Character",
-    "charactersTable__lblNemesis": "Nemesis"
+    "charactersTable__lblNemesis": "Nemesis",
+    "charactersTable__lblDelete": "Delete",
+    "charactersTable__lblNoCharacters": "No characters found",
+    "charactersTable__lblTapToReloadCharacters": "Tap the button below to reload characters",
+    "charactersTable__btnReloadCharacters": "Reload Characters"
 }

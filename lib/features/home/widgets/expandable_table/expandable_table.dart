@@ -4,12 +4,23 @@ import 'package:eterny_task/features/home/widgets/expandable_table/character_row
 import 'package:eterny_task/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
+typedef OnDeleteCharacter = Function(String uuid);
+typedef OnDeleteNemesis = Function(String uuid, int nemesisId);
+typedef OnDeleteSecret = Function(String uuid, int secretId, int nemesisId);
+
 class ExpandableTable extends StatefulWidget {
   const ExpandableTable({
     required this.characters,
+    this.onDeleteCharacter,
+    this.onDeleteNemesis,
+    this.onDeleteSecret,
     super.key,
   });
+
   final List<Character> characters;
+  final OnDeleteCharacter? onDeleteCharacter;
+  final OnDeleteNemesis? onDeleteNemesis;
+  final OnDeleteSecret? onDeleteSecret;
 
   @override
   State<ExpandableTable> createState() => _ExpandableTableState();
@@ -67,6 +78,9 @@ class _ExpandableTableState extends State<ExpandableTable> {
                       character: character,
                       expandedItems: expandedItems,
                       onToggleExpansion: _toggleExpansion,
+                      onDeleteCharacter: widget.onDeleteCharacter,
+                      onDeleteNemesis: widget.onDeleteNemesis,
+                      onDeleteSecret: widget.onDeleteSecret,
                     );
                   },
                 ),
@@ -123,7 +137,8 @@ enum ExpandableTableColumnConfig {
   isAlive,
   years,
   secretId,
-  secreteCode;
+  secreteCode,
+  delete;
 
   double get width => switch (this) {
     expand => 40,
@@ -145,6 +160,7 @@ enum ExpandableTableColumnConfig {
     years => 65,
     secretId => 80,
     secreteCode => 150,
+    delete => 100,
   };
 
   static List<ExpandableTableColumnConfig> get characterColumns => [
@@ -161,6 +177,7 @@ enum ExpandableTableColumnConfig {
     ExpandableTableColumnConfig.knowsTheAnswer,
     ExpandableTableColumnConfig.nemeses,
     ExpandableTableColumnConfig.secrets,
+    ExpandableTableColumnConfig.delete,
   ];
 
   String getLocalizedName(AppLocalizations l10n) => switch (this) {
@@ -183,6 +200,7 @@ enum ExpandableTableColumnConfig {
     years => l10n.charactersTable__lblYears,
     secretId => l10n.charactersTable__lblSecretId,
     secreteCode => l10n.charactersTable__lblSecreteCode,
+    delete => l10n.charactersTable__lblDelete,
   };
 
   static double tableWidth() {

@@ -94,12 +94,6 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[Locale('en')];
 
-  /// No description provided for @core__lblRemove.
-  ///
-  /// In en, this message translates to:
-  /// **'Remove'**
-  String get core__lblRemove;
-
   /// No description provided for @charactersTable__lblTitle.
   ///
   /// In en, this message translates to:
@@ -225,6 +219,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Nemesis'**
   String get charactersTable__lblNemesis;
+
+  /// No description provided for @charactersTable__lblDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get charactersTable__lblDelete;
+
+  /// No description provided for @charactersTable__lblNoCharacters.
+  ///
+  /// In en, this message translates to:
+  /// **'No characters found'**
+  String get charactersTable__lblNoCharacters;
+
+  /// No description provided for @charactersTable__lblTapToReloadCharacters.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the button below to reload characters'**
+  String get charactersTable__lblTapToReloadCharacters;
+
+  /// No description provided for @charactersTable__btnReloadCharacters.
+  ///
+  /// In en, this message translates to:
+  /// **'Reload Characters'**
+  String get charactersTable__btnReloadCharacters;
 }
 
 class _AppLocalizationsDelegate

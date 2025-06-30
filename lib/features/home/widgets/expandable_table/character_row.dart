@@ -10,12 +10,19 @@ class CharacterRow extends StatefulWidget {
     required this.character,
     required this.onToggleExpansion,
     this.isExpanded = false,
+    this.onDeleteCharacter,
+    this.onDeleteNemesis,
+    this.onDeleteSecret,
     super.key,
   });
 
   final Character character;
   final bool isExpanded;
   final ValueChanged<String> onToggleExpansion;
+
+  final OnDeleteCharacter? onDeleteCharacter;
+  final OnDeleteNemesis? onDeleteNemesis;
+  final OnDeleteSecret? onDeleteSecret;
 
   @override
   State<CharacterRow> createState() => _CharacterRowState();
@@ -137,6 +144,15 @@ class _CharacterRowState extends State<CharacterRow> {
                       textColor: theme.colorScheme.onTertiaryContainer,
                     )
                   : Text('0', style: TextStyle(color: theme.colorScheme.onSurface)),
+            ),
+            TableDataCell(
+              width: ExpandableTableColumnConfig.delete.width,
+              child: widget.onDeleteCharacter != null
+                  ? IconButton(
+                      onPressed: () => widget.onDeleteCharacter?.call(widget.character.uuid),
+                      icon: const Icon(Icons.delete, size: 24),
+                    )
+                  : const SizedBox.shrink(),
             ),
           ],
         ),

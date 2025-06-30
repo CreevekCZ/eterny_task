@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 class SecretRow extends StatelessWidget {
   const SecretRow({
     required this.secret,
+    this.onDeleteSecret,
     super.key,
   });
   final Secret secret;
+  final ValueChanged<int>? onDeleteSecret;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,15 @@ class SecretRow extends StatelessWidget {
               child: Text(
                 secret.secreteCode,
               ),
+            ),
+            TableDataCell(
+              width: ExpandableTableColumnConfig.delete.width,
+              child: onDeleteSecret != null
+                  ? IconButton(
+                      onPressed: () => onDeleteSecret?.call(secret.id),
+                      icon: const Icon(Icons.delete, size: 24),
+                    )
+                  : const SizedBox.shrink(),
             ),
           ],
         ),
