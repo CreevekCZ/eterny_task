@@ -1,6 +1,7 @@
 import 'package:eterny_task/features/home/bloc/characters_event.dart';
 import 'package:eterny_task/features/home/bloc/characters_state.dart';
 import 'package:eterny_task/features/home/models/character.dart';
+import 'package:eterny_task/features/home/models/nemesis.dart';
 import 'package:eterny_task/features/home/services/character_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -40,31 +41,45 @@ final class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
     CharactersDeleteCharacterEvent event,
     Emitter<CharactersState> emit,
   ) async {
-    emit(CharactersState.loading(characters: state.maybeCharacters));
+    final currentCharacters = state.maybeCharacters;
+    if (currentCharacters.isEmpty) {
+      return;
+    }
 
-    final characters = List<Character>.from(state.maybeCharacters);
+    emit(CharactersState.loading(characters: currentCharacters));
 
-    characters.removeWhere((character) => character.uuid == event.uuid);
+    final updatedCharacters = currentCharacters
+        .where((character) => character.uuid != event.uuid)
+        .toList();
 
-    emit(CharactersState.loaded(characters: characters));
+    emit(CharactersState.loaded(characters: updatedCharacters));
   }
 
   Future<void> _handleDeleteNemesis(
     CharactersDeleteNemesisEvent event,
     Emitter<CharactersState> emit,
   ) async {
-    emit(CharactersState.loading(characters: state.maybeCharacters));
+    final currentCharacters = state.maybeCharacters;
+    if (currentCharacters.isEmpty) {
+      return;
+    }
 
-    final characters = List<Character>.from(state.maybeCharacters);
-    final targetCharacter = characters.firstWhere((c) => c.uuid == event.uuid);
+    emit(CharactersState.loading(characters: currentCharacters));
+
+    final targetIndex = currentCharacters.indexWhere((c) => c.uuid == event.uuid);
+    if (targetIndex == -1) {
+      return;
+    }
+
+    final targetCharacter = currentCharacters[targetIndex];
 
     final updatedCharacter = targetCharacter.copyWith(
       nemeses: targetCharacter.nemeses.where((n) => n.id != event.nemesisId).toList(),
     );
 
-    final updatedCharacters = characters
-        .map((c) => c.uuid == event.uuid ? updatedCharacter : c)
-        .toList();
+    // Create new list with updated character
+    final updatedCharacters = List<Character>.from(currentCharacters);
+    updatedCharacters[targetIndex] = updatedCharacter;
 
     emit(CharactersState.loaded(characters: updatedCharacters));
   }
@@ -73,27 +88,37 @@ final class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
     CharactersDeleteSecretEvent event,
     Emitter<CharactersState> emit,
   ) async {
-    emit(CharactersState.loading(characters: state.maybeCharacters));
+    final currentCharacters = state.maybeCharacters;
+    if (currentCharacters.isEmpty) {
+      return;
+    }
 
-    final characters = List<Character>.from(state.maybeCharacters);
+    emit(CharactersState.loading(characters: currentCharacters));
 
-    final targetCharacter = characters.firstWhere((c) => c.uuid == event.uuid);
+    final targetCharacterIndex = currentCharacters.indexWhere((c) => c.uuid == event.uuid);
+    if (targetCharacterIndex == -1) {
+      return;
+    }
 
-    final targetNemesis = targetCharacter.nemeses.firstWhere((n) => n.id == event.nemesisId);
+    final targetCharacter = currentCharacters[targetCharacterIndex];
+    final targetNemesisIndex = targetCharacter.nemeses.indexWhere((n) => n.id == event.nemesisId);
+    if (targetNemesisIndex == -1) {
+      return;
+    }
+
+    final targetNemesis = targetCharacter.nemeses[targetNemesisIndex];
 
     final updatedNemesis = targetNemesis.copyWith(
       secrets: targetNemesis.secrets.where((s) => s.id != event.secretId).toList(),
     );
 
-    final updatedCharacter = targetCharacter.copyWith(
-      nemeses: targetCharacter.nemeses
-          .map((n) => n.id == event.nemesisId ? updatedNemesis : n)
-          .toList(),
-    );
+    final updatedNemeses = List<Nemesis>.from(targetCharacter.nemeses);
+    updatedNemeses[targetNemesisIndex] = updatedNemesis;
 
-    final updatedCharacters = characters
-        .map((c) => c.uuid == event.uuid ? updatedCharacter : c)
-        .toList();
+    final updatedCharacter = targetCharacter.copyWith(nemeses: updatedNemeses);
+
+    final updatedCharacters = List<Character>.from(currentCharacters);
+    updatedCharacters[targetCharacterIndex] = updatedCharacter;
 
     emit(CharactersState.loaded(characters: updatedCharacters));
   }

@@ -1,7 +1,5 @@
 import 'package:eterny_task/di.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:timezone/data/latest_all.dart';
 
 class AppSetup {
@@ -12,7 +10,6 @@ class AppSetup {
   Future<void> init() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    setupWeb();
     await _setupDependencies();
     await setupTimezone();
   }
@@ -23,13 +20,5 @@ class AppSetup {
 
   Future<void> setupTimezone() async {
     initializeTimeZones();
-  }
-
-  void setupWeb() {
-    if (!kIsWeb) {
-      return;
-    }
-
-    usePathUrlStrategy();
   }
 }

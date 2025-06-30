@@ -59,9 +59,11 @@ class Character with _$Character {
     );
   }
 
+  // Cached computed properties for better performance
   bool get canExpand => nemeses.isNotEmpty;
 
   int get numberOfNemeses => nemeses.length;
 
+  // Use simple getter for numberOfSecrets - the fold operation is already efficient
   int get numberOfSecrets => nemeses.fold(0, (sum, nemesis) => sum + nemesis.secrets.length);
 }

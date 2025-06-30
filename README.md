@@ -12,7 +12,7 @@ There are two attachments in the email you were sent. In those, you can see an e
 
 ![Eterny Task Preview](ui_example.png)
 
-Use the attached "data.json”(`assets/data/data.json`) and create the hierarchy table application (similar to the screenshot). The application has data and view layers, which are clearly separated. Implement a "remove" button, which deletes an item in the data and view layer in your application. If an item has children items, they have to be deleted as well. 
+Use the attached "data.json"(`assets/data/data.json`) and create the hierarchy table application (similar to the screenshot). The application has data and view layers, which are clearly separated. Implement a "remove" button, which deletes an item in the data and view layer in your application. If an item has children items, they have to be deleted as well. 
 
 ### Scope
 
@@ -39,6 +39,7 @@ Use the attached "data.json”(`assets/data/data.json`) and create the hierarchy
   - children is not a list of objects but an object that contains keys that then contain lists of objects.
 - After the analysis, I decided not to strongly type every value but mostly keep data as strings to ensure that the assignment of displaying values in a table goes smoothly.
 - Because of the specific shape of the data, there is a need for unit tests that ensure that parsing and formatting work correctly, and it also improves the developer experience
+- Data could be a lot larger in the real-world so I decided to use an isolate for parsing the JSON data to avoid blocking the UI thread.
 
 - I created a custom DateTime parse function that handles the proprietary format and converts it to a standard DateTime object.
 - I used the `timezone` package to handle timezones and ensure that the date is displayed correctly in the user's local timezone.
@@ -64,6 +65,8 @@ To run the Eterny Task application, follow these steps:
 4. Run `flutter pub run build_runner build --delete-conflicting-outputs` to generate code for Freezed, JSON serialization, auto_route, and dependency injection.
 5. Run `flutter run` to start the application.
 
+*Note: iOS may require additional setup for signing and provisioning profiles. Ensure you have the necessary certificates and profiles configured in Xcode. You can easily rewrite bundle identifier in `ios/Runner.xcodeproj/project.pbxproj` file.*
+
 ## Features
 - Hierarchical display of JSON data in a table format.
 - Expandable/collapsible items to show/hide child items.
@@ -88,3 +91,9 @@ To run the Eterny Task application, follow these steps:
 - timezone https://pub.dev/packages/timezone - Comprehensive timezone data and utilities for date/time handling.
 - json_serializable https://pub.dev/packages/json_serializable - Automatic JSON serialization code generation.
 - flutter_gen https://pub.dev/packages/flutter_gen - Asset code generation for type-safe access to assets and resources.
+
+## Known Issues and Space for improvements if the project was real
+- **Error Handling**: The app currently lacks comprehensive error handling. Implementing better error handling and user feedback for data loading and parsing errors would enhance robustness.
+- **Data**: If the provided JSON would be provided by the backend where I can comunicate with the developer team, I would suggest to change the JSON structure to be more consistent and easier to parse. For example, using a consistent format for boolean values and ensuring that all keys are valid JSON identifiers.
+- **Typing**: Some values are stored so if I could see more examples of the data, I would consider using more strongly typed values instead of strings. This would improve type safety and reduce the need for parsing and formatting.
+- **UI/UX**: Usage of Skeletonizer package is not implemented in the app. It would be a good idea to implement loading states for better user experience. Tables are not generally the best type of UI for mobile devices, so considering a more mobile-friendly design would be beneficial.

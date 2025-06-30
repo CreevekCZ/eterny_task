@@ -24,7 +24,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     gh.factory<_i914.AppRouteObserver>(() => _i914.AppRouteObserver());
-    gh.factory<_i415.CharacterService>(() => _i415.CharacterService());
+    gh.singleton<_i415.CharacterService>(() => _i415.CharacterService());
     gh.factory<_i961.CharactersBloc>(
       () => _i961.CharactersBloc(gh<_i415.CharacterService>()),
     );
