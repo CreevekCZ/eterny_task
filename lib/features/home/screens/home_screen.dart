@@ -5,6 +5,7 @@ import 'package:eterny_task/features/home/bloc/characters_bloc.dart';
 import 'package:eterny_task/features/home/bloc/characters_event.dart';
 import 'package:eterny_task/features/home/bloc/characters_state.dart';
 import 'package:eterny_task/features/home/widgets/expandable_table/expandable_table.dart';
+import 'package:eterny_task/ui/app_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,7 +33,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocProvider(
       create: (context) => _charactersBloc,
       child: BlocConsumer<CharactersBloc, CharactersState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is CharactersErrorState) {
+            AppSnackBar.showError(
+              context,
+              message: state.message,
+              actionLabel: context.l10n.charactersTable__btnReloadCharacters,
+              onAction: () => _charactersBloc.add(const CharactersEvent.loadCharacters()),
+            );
+          }
+        },
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(

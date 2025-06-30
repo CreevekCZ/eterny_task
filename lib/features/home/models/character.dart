@@ -32,7 +32,6 @@ class Character with _$Character {
     final data = json['data'] as Map<String, dynamic>;
     final children = json['children'] as Map<String, dynamic>? ?? {};
 
-    // Parse nemeses
     List<Nemesis> nemeses = [];
     if (children.containsKey('has_nemesis')) {
       final hasNemesis = children['has_nemesis'] as Map<String, dynamic>;

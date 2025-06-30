@@ -15,6 +15,10 @@ sealed class CharactersState with _$CharactersState {
     @Default([]) List<Character> characters,
   }) = CharactersLoadedState;
 
+  const factory CharactersState.error({
+    required String message,
+  }) = CharactersErrorState;
+
   const CharactersState._();
 
   List<Character> get maybeCharacters => maybeMap(

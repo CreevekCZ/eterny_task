@@ -26,9 +26,14 @@ final class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
     Emitter<CharactersState> emit,
   ) async {
     emit(const CharactersState.loading());
-    final characters = await _characterService.getCharacters();
 
-    emit(CharactersState.loaded(characters: characters));
+    try {
+      final characters = await _characterService.getCharacters();
+
+      emit(CharactersState.loaded(characters: characters));
+    } catch (e) {
+      emit(CharactersState.error(message: e.toString()));
+    }
   }
 
   Future<void> _handleDeleteCharacter(

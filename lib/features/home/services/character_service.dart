@@ -10,7 +10,6 @@ class CharacterService {
       final json = await rootBundle.loadString('assets/data/data.json');
       final data = jsonDecode(json) as List<dynamic>;
 
-      // own keys not using character id, values can be duplicated
       final characters = <Character>[];
       for (int i = 0; i < data.length; i++) {
         final character = Character.fromJson(data[i] as Map<String, dynamic>);
@@ -18,9 +17,8 @@ class CharacterService {
       }
 
       return characters;
-    } catch (e) {
-      // Handle error gracefully
-      return [];
+    } catch (_) {
+      rethrow;
     }
   }
 }
